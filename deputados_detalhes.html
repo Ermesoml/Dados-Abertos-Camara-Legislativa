@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Fiscalize - Câmara Legislativa Federal</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <nav class="blue-grey lighten-2" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Fiscalize</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#">Fiscalize</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="#">Fiscalize</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center orange-text">Detalhes do deputado</h1>
+    </div>
+  </div>
+
+  <div class="container" id="app">
+    <div class="section">
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m12" v-if="dados_deputado != undefined" v-cloak>
+          <div class="card  blue-grey lighten-1">
+            <div class="card-content white-text center-align">
+              <img v-if="dados_deputado.ultimoStatus != undefined" :src="dados_deputado.ultimoStatus.urlFoto" :alt="dados_deputado.nomeCivil" style="max-width: 110px">
+              <span class="card-title">{{dados_deputado.id}}</span>
+
+              <p><strong>Valor gasto em {{ano_pesquisa}}: </strong>{{formatCurrency(total_despesas)}}</p>
+              <p><strong>Nome civil: </strong>{{dados_deputado.nomeCivil}}</p>
+              <p v-if="dados_deputado.ultimoStatus != undefined"><strong>Partido: </strong>{{dados_deputado.ultimoStatus.siglaPartido}}</p>
+              <p><strong>CPF: </strong>{{dados_deputado.cpf}}</p>
+              <p><strong>Sexo: </strong>{{dados_deputado.sexo}}</p>
+              <p><strong>Data de nascimento: </strong>{{dados_deputado.dataNascimento}}</p>
+              <p><strong>UF nascimento: </strong>{{dados_deputado.ufNascimento}}</p>
+              <p><strong>Municipio de nascimento: </strong>{{dados_deputado.municipioNascimento}}</p>
+              <p><strong>Escolaridade: </strong>{{dados_deputado.escolaridade}}</p>
+              <hr>
+              <p v-if="dados_deputado.ultimoStatus != undefined"><strong>Nome eleitoral: </strong>{{dados_deputado.ultimoStatus.nomeEleitoral}}</p>
+              <p v-if="dados_deputado.ultimoStatus != undefined"><strong>Data de eleição: </strong>{{dados_deputado.ultimoStatus.data}}</p>
+              <p v-if="dados_deputado.ultimoStatus != undefined"><strong>Situação: </strong>{{dados_deputado.ultimoStatus.situacao}}</p>
+              <p v-if="dados_deputado.ultimoStatus != undefined"><strong>Condição eleitoral: </strong>{{dados_deputado.ultimoStatus.condicaoEleitoral}}</p>
+              <p v-if="dados_deputado.ultimoStatus != undefined"><strong>Nome eleitoral: </strong>{{dados_deputado.ultimoStatus.nomeEleitoral}}</p>
+            </div>
+            <div class="card-action center-align">
+              <a href="#">Despesas</a>
+              <a href="#">Eventos</a>
+              <a href="#">Orgãos</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <h4 class="center-align">Despesas em {{ano_pesquisa}}</h4>
+        <table class="bordered striped centered responsive-table">
+          <thead>
+            <tr>
+              <th>Ano</th>
+              <th>Mês</th>
+              <th>Tipo desp.</th>
+              <th>Data do docum.</th>
+              <th>Fornecedor</th>
+              <th>CNPJ Forn.</th>
+              <th>Valor docum.</th>
+              <th>Tipo docum.</th>
+              <th>Num docum.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="despesa in despesas_deputado">
+              <td>{{despesa.ano}}</td>
+              <td>{{despesa.mes}}</td>
+              <td>{{despesa.tipoDespesa}}</td>
+              <td>{{despesa.dataDocumento}}</td>
+              <td>{{despesa.nomeFornecedor}}</td>
+              <td>{{despesa.cnpjFornecedor}}</td>
+              <td>{{despesa.valorDocumento}}</td>
+              <td>{{despesa.tipoDocumento}}</td>
+              <td>{{despesa.numDocumento}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <br><br>
+  </div>
+
+  <footer class="page-footer  blue-grey lighten-2">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+  <script src="https://unpkg.com/vue@2.4.2"></script>
+  <script>
+
+    function findGetParameter(parameterName) {
+      var result = null,
+          tmp = [];
+      var items = location.search.substr(1).split("&");
+      for (var index = 0; index < items.length; index++) {
+          tmp = items[index].split("=");
+          if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+      }
+      return result;
+    }
+    
+    var app = new Vue({
+      el: '#app',
+      data: {
+        dados_deputado: {},
+        despesas_deputado: [],
+        total_despesas: 0,
+        ano_pesquisa: 0
+      },
+      methods: {
+        buscarInfoDeputado: function(deputado_id){
+          var url = "https://dadosabertos.camara.leg.br/api/v2/deputados/" + deputado_id 
+
+          $.ajax({
+            method: "GET",
+            url: url,
+            dataType: "json",
+            success: this.atualizarInfo
+          });
+        },
+        atualizarInfo: function(data){
+          this.dados_deputado = data.dados;
+        },
+        buscarDespesasDeputado: function(deputado_id, ano_pesquisa){
+          var url = "https://dadosabertos.camara.leg.br/api/v2/deputados/"+ deputado_id +"/despesas?ano=" + ano_pesquisa + "&itens=100&ordem=desc&ordenarPor=numMes"; 
+
+          $.ajax({
+            method: "GET",
+            url: url,
+            dataType: "json",
+            success: this.atualizarDespesas
+          });
+        },
+        buscarDespesasDeputadoUrl: function(url){
+          $.ajax({
+            method: "GET",
+            url: url,
+            dataType: "json",
+            success: this.atualizarDespesas
+          });
+        },
+        atualizarDespesas: function(data){
+          this.despesas_deputado = this.despesas_deputado.concat(data.dados);
+
+          for (var i = 0; i < data.dados.length; i++) {
+            this.total_despesas = this.total_despesas + parseFloat(data.dados[i].valorDocumento);
+          }
+
+          for (var i = 0; i < data.links.length; i++) {
+            if (data.links[i].rel == 'next'){
+              this.buscarDespesasDeputadoUrl(data.links[i].href);
+            }
+          }
+        },
+        formatCurrency: function(total) {
+          var neg = false;
+          if(total < 0) {
+              neg = true;
+              total = Math.abs(total);
+          }
+          return (neg ? "-R$" : 'R$') + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1.").toString();
+        }
+      },
+      created: function(){
+        var deputado_id = findGetParameter('deputado_id');
+        this.ano_pesquisa = 2017;
+
+        this.buscarInfoDeputado(deputado_id);
+        this.buscarDespesasDeputado(deputado_id, this.ano_pesquisa);
+      }
+    })
+  </script>
+  </body>
+</html>
