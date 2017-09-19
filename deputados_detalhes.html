@@ -38,10 +38,11 @@
           <div class="card  blue-grey lighten-1">
             <div class="card-content white-text center-align">
               <img v-if="dados_deputado.ultimoStatus != undefined" :src="dados_deputado.ultimoStatus.urlFoto" :alt="dados_deputado.nomeCivil" style="max-width: 110px">
-              <span class="card-title">{{dados_deputado.id}}</span>
+              <span class="card-title">{{dados_deputado.nomeCivil}}</span>
 
               <p><strong>Valor gasto em {{ano_pesquisa}}: </strong>{{formatCurrency(total_despesas)}}</p>
-              <p><strong>Nome civil: </strong>{{dados_deputado.nomeCivil}}</p>
+              <p><strong>Código: </strong>{{dados_deputado.id}}</p>
+              <!-- <p><strong>Nome civil: </strong>{{dados_deputado.nomeCivil}}</p> -->
               <p v-if="dados_deputado.ultimoStatus != undefined"><strong>Partido: </strong>{{dados_deputado.ultimoStatus.siglaPartido}}</p>
               <p><strong>CPF: </strong>{{dados_deputado.cpf}}</p>
               <p><strong>Sexo: </strong>{{dados_deputado.sexo}}</p>
@@ -56,44 +57,101 @@
               <p v-if="dados_deputado.ultimoStatus != undefined"><strong>Condição eleitoral: </strong>{{dados_deputado.ultimoStatus.condicaoEleitoral}}</p>
               <p v-if="dados_deputado.ultimoStatus != undefined"><strong>Nome eleitoral: </strong>{{dados_deputado.ultimoStatus.nomeEleitoral}}</p>
             </div>
-            <div class="card-action center-align">
-              <a href="#">Despesas</a>
-              <a href="#">Eventos</a>
-              <a href="#">Orgãos</a>
-            </div>
           </div>
         </div>
       </div>
-      <div class="section">
-        <h4 class="center-align">Despesas em {{ano_pesquisa}}</h4>
-        <table class="bordered striped centered responsive-table">
-          <thead>
-            <tr>
-              <th>Ano</th>
-              <th>Mês</th>
-              <th>Tipo desp.</th>
-              <th>Data do docum.</th>
-              <th>Fornecedor</th>
-              <th>CNPJ Forn.</th>
-              <th>Valor docum.</th>
-              <th>Tipo docum.</th>
-              <th>Num docum.</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="despesa in despesas_deputado">
-              <td>{{despesa.ano}}</td>
-              <td>{{despesa.mes}}</td>
-              <td>{{despesa.tipoDespesa}}</td>
-              <td>{{despesa.dataDocumento}}</td>
-              <td>{{despesa.nomeFornecedor}}</td>
-              <td>{{despesa.cnpjFornecedor}}</td>
-              <td>{{despesa.valorDocumento}}</td>
-              <td>{{despesa.tipoDocumento}}</td>
-              <td>{{despesa.numDocumento}}</td>
-            </tr>
-          </tbody>
-        </table>
+      
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs tabs-fixed-width">
+            <li class="tab col s3"><a class="active" href="#tabDespesas">Despesas</a></li>
+            <li class="tab col s3"><a href="#tabEventos">Eventos</a></li>
+          </ul>
+        </div>
+        <div id="tabDespesas" class="col s12">
+          <div class="section">
+            <h4 class="center-align">Despesas em {{ano_pesquisa}}</h4>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="tipo-despesa" type="text" v-model="filtro" v-on:keyup="filtrarDespesas()">
+                <label for="tipo-despesa">Filtro (Tipo de despesa ou Fornecedor)</label>
+              </div>
+            </div>
+            <table class="bordered striped centered responsive-table">
+              <thead>
+                <tr>
+                  <th>Ano</th>
+                  <th>Mês</th>
+                  <th>Tipo desp.</th>
+                  <th>Data do docum.</th>
+                  <th>Fornecedor</th>
+                  <th>CNPJ Forn.</th>
+                  <th>Valor docum.</th>
+                  <th>Tipo docum.</th>
+                  <th>Num docum.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="despesa in despesas_filtradas">
+                  <td>{{despesa.ano}}</td>
+                  <td>{{despesa.mes}}</td>
+                  <td>{{despesa.tipoDespesa}}</td>
+                  <td>{{despesa.dataDocumento}}</td>
+                  <td>{{despesa.nomeFornecedor}}</td>
+                  <td>{{despesa.cnpjFornecedor}}</td>
+                  <td>{{despesa.valorDocumento}}</td>
+                  <td>{{despesa.tipoDocumento}}</td>
+                  <td>{{despesa.numDocumento}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row">
+              <h3>Total filtrado: {{formatCurrency(total_despesas_filtradas)}}</h3>
+            </div>
+          </div>
+        </div>
+        <div id="tabEventos" class="col s12">
+          <div class="section">
+            <h4 class="center-align">Eventos em {{ano_pesquisa}}</h4>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="tipo-despesa" type="text" v-model="filtro" v-on:keyup="filtrarDespesas()">
+                <label for="tipo-despesa">Filtro (Tipo de despesa ou Fornecedor)</label>
+              </div>
+            </div>
+            <table class="bordered striped centered responsive-table">
+              <thead>
+                <tr>
+                  <th>Ano</th>
+                  <th>Mês</th>
+                  <th>Tipo desp.</th>
+                  <th>Data do docum.</th>
+                  <th>Fornecedor</th>
+                  <th>CNPJ Forn.</th>
+                  <th>Valor docum.</th>
+                  <th>Tipo docum.</th>
+                  <th>Num docum.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="despesa in despesas_filtradas">
+                  <td>{{despesa.ano}}</td>
+                  <td>{{despesa.mes}}</td>
+                  <td>{{despesa.tipoDespesa}}</td>
+                  <td>{{despesa.dataDocumento}}</td>
+                  <td>{{despesa.nomeFornecedor}}</td>
+                  <td>{{despesa.cnpjFornecedor}}</td>
+                  <td>{{despesa.valorDocumento}}</td>
+                  <td>{{despesa.tipoDocumento}}</td>
+                  <td>{{despesa.numDocumento}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row">
+              <h3>Total filtrado: {{formatCurrency(total_despesas_filtradas)}}</h3>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <br><br>
@@ -158,8 +216,11 @@
       data: {
         dados_deputado: {},
         despesas_deputado: [],
+        despesas_filtradas: [],
         total_despesas: 0,
-        ano_pesquisa: 0
+        total_despesas_filtradas: 0,
+        ano_pesquisa: 0,
+        filtro: ''
       },
       methods: {
         buscarInfoDeputado: function(deputado_id){
@@ -195,14 +256,28 @@
         },
         atualizarDespesas: function(data){
           this.despesas_deputado = this.despesas_deputado.concat(data.dados);
+          this.despesas_filtradas = this.despesas_filtradas.concat(data.dados);
+          
 
           for (var i = 0; i < data.dados.length; i++) {
             this.total_despesas = this.total_despesas + parseFloat(data.dados[i].valorDocumento);
+            this.total_despesas_filtradas = this.total_despesas_filtradas + parseFloat(data.dados[i].valorDocumento);
           }
 
           for (var i = 0; i < data.links.length; i++) {
             if (data.links[i].rel == 'next'){
               this.buscarDespesasDeputadoUrl(data.links[i].href);
+            }
+          }
+        },
+        filtrarDespesas: function(){
+          this.despesas_filtradas = [];
+          this.total_despesas_filtradas = 0;
+
+          for (var i = 0; i < this.despesas_deputado.length; i++) {
+            if (this.despesas_deputado[i].tipoDespesa.toUpperCase().indexOf(this.filtro.toUpperCase()) != -1){
+              this.despesas_filtradas.push(this.despesas_deputado[i]);
+              this.total_despesas_filtradas = this.total_despesas_filtradas + parseFloat(this.despesas_deputado[i].valorDocumento);
             }
           }
         },
