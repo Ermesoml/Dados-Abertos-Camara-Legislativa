@@ -1,5 +1,5 @@
-# Dados Abertos da Câmara Legislativa de Goiânia - https://dadosabertos.camara.leg.br/swagger/api.html
-Cliente para consumir os dados abertos disponibilizados pela Câmara Legislativa de Goiânia.
+# Dados Abertos da Câmara dos Deputados - https://dadosabertos.camara.leg.br/swagger/api.html
+Cliente para consumir os dados abertos disponibilizados pela Câmara dos Deputados.
 
 # Introdução
 
