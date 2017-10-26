@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="theme-color" content="#0004eb"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
   <title>Fiscalize - Câmara Legislativa Federal</title>
 
@@ -12,7 +13,7 @@
 </head>
 <body>
   <nav class="blue lighten-2" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">AppFiscalize</a> 
+    <div class="nav-wrapper container"><a id="logo-container" href="/index.html" class="brand-logo">AppFiscalize</a> 
     </div>
   </nav>
   <div class="section no-pad-bot" id="index-banner">
@@ -26,8 +27,13 @@
     <div class="section">
       <!--   Icon Section   -->
       <div class="row">
-        <div class="col s12">
-          <input type="text" class="w3-input w3-border" v-model="filtro_deputados" v-on:keydown="filtrarDeputados()" placeholder="Pesquise por código, nome ou partido">
+        <div class="input-field col s12 m6">
+          <input id="tipo-despesa" type="text" v-model="filtro_deputados" v-on:keyup="filtrarDeputados()">
+          <label for="tipo-despesa">Pesquise por nome do(a) deputado(a)</label>
+        </div>
+        <div class="input-field col s12 m6">
+          <input id="tipo-despesa" type="text" v-model="filtro_partidos" v-on:keyup="filtrarPartidos()">
+          <label for="tipo-despesa">Pesquise por nome do partido</label>
         </div>
         <div class="col s12">
           <div v-if="processando" class="red-text">
@@ -37,15 +43,15 @@
           </div>
         </div>
         <div class="col s12 m4" v-for="bloco in deputados_filtrados" v-if="!processando" v-cloak>
-          <div class="card blue-grey lighten-1">
-            <div class="card-content white-text">
+          <div class="card blue-grey lighten-1 ">
+            <div class="card-content white-text center-align">
               <img :src="bloco.urlFoto" :alt="bloco.nome" style="max-width: 110px">
               <span class="card-title">{{bloco.id}}</span>
               <p>{{bloco.nome}}</p>
               <p><strong>Partido: </strong>{{bloco.siglaPartido}}</p>
             </div>
-            <div class="card-action">
-              <a :href="'deputados_detalhes.html?deputado_id='+bloco.id">Mais detalhes deste deputado</a>
+            <div class="card-action center-align">
+              <a :href="'deputados_detalhes.html?deputado_id='+bloco.id">Mais detalhes</a>
             </div>
           </div>
         </div>
@@ -78,84 +84,11 @@
   </footer>
 
   <!--  Scripts-->
+  <script src="js/funcoes.js"></script>
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
   <script src="https://unpkg.com/vue@2.4.2"></script>
-  <script>
-
-    function findGetParameter(parameterName) {
-      var result = null,
-          tmp = [];
-      var items = location.search.substr(1).split("&");
-      for (var index = 0; index < items.length; index++) {
-          tmp = items[index].split("=");
-          if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
-      }
-      return result;
-    }
-
-    var app = new Vue({
-      el: '#app',
-      data: {
-        deputados: [],
-        deputados_filtrados: [],
-        filtro_deputados: '',
-        processando: false
-      },
-      methods: {
-        buscarDeputadosUrl: function(url){
-          $.ajax({
-            method: "GET",
-            url: url,
-            dataType: "json",
-            success: this.atualizarDeputados
-          });
-        },
-        buscarDeputados: function(){
-          this.processando = true;
-
-          $.ajax({
-            method: "GET",
-            url: "https://dadosabertos.camara.leg.br/api/v2/deputados/?pagina=1&itens=99",
-            dataType: "json",
-            success: this.atualizarDeputados
-          });
-        },
-        atualizarDeputados: function(data){
-          this.deputados = this.deputados.concat(data.dados);
-          this.deputados_filtrados = this.deputados;
-
-          var has_next = false;
-          for (var i = 0; i < data.links.length; i++) {
-            if(data.links[i].rel == 'next'){
-              this.buscarDeputadosUrl(data.links[i].href);
-              has_next = true;
-              break;
-            }
-          }
-
-          if (!has_next)
-            this.processando = false;
-        },
-        filtrarDeputados: function(){
-          this.deputados_filtrados = [];
-          
-          if (this.filtro_deputados == '')
-            this.deputados_filtrados = this.deputados;
-          else{
-            for (var i = 0; i < this.deputados.length; i++) {
-              if (this.deputados[i].nome.toUpperCase().indexOf(this.filtro_deputados.toUpperCase()) > -1){
-                this.deputados_filtrados.push(this.deputados[i])
-              }
-            }
-          }
-        }
-      },
-      created: function(){
-        this.buscarDeputados();
-      }
-    })
-  </script>
+  <script src="js/deputados.js"></script>
   </body>
 </html>
