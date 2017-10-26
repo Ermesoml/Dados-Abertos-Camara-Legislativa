@@ -11,16 +11,8 @@
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
-  <nav class="blue-grey lighten-2" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Fiscalize</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="#">Fiscalize</a></li>
-      </ul>
-
-      <ul id="nav-mobile" class="side-nav">
-        <li><a href="#">Fiscalize</a></li>
-      </ul>
-      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+  <nav class="blue lighten-2" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">AppFiscalize</a> 
     </div>
   </nav>
   <div class="section no-pad-bot" id="index-banner">
@@ -37,8 +29,15 @@
         <div class="col s12">
           <input type="text" class="w3-input w3-border" v-model="filtro_deputados" v-on:keydown="filtrarDeputados()" placeholder="Pesquise por código, nome ou partido">
         </div>
-        <div class="col s12 m4" v-for="bloco in deputados_filtrados" v-cloak>
-          <div class="card  blue-grey lighten-1">
+        <div class="col s12">
+          <div v-if="processando" class="red-text">
+            <div class="progress">
+                <div class="indeterminate"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m4" v-for="bloco in deputados_filtrados" v-if="!processando" v-cloak>
+          <div class="card blue-grey lighten-1">
             <div class="card-content white-text">
               <img :src="bloco.urlFoto" :alt="bloco.nome" style="max-width: 110px">
               <span class="card-title">{{bloco.id}}</span>
@@ -46,7 +45,7 @@
               <p><strong>Partido: </strong>{{bloco.siglaPartido}}</p>
             </div>
             <div class="card-action">
-              <a :href="'deputados_detalhes.html?deputado_id='+bloco.id">Ver mais</a>
+              <a :href="'deputados_detalhes.html?deputado_id='+bloco.id">Mais detalhes deste deputado</a>
             </div>
           </div>
         </div>
@@ -55,38 +54,25 @@
     <br><br>
   </div>
 
-  <footer class="page-footer  blue-grey lighten-2">
+  <footer class="page-footer blue">
     <div class="container">
       <div class="row">
         <div class="col l6 s12">
-          <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
-
-
+          <h5 class="white-text">AppFiscalize</h5>
+          <p class="grey-text text-lighten-4">Acompanhe de forma fácil e prática todos os detalhes dispostos pela <a class="white-text" href="http://www2.camara.leg.br/">Câmara dos deputados</a>.</p>
         </div>
         <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
+          <h5 class="white-text">O que usamos:</h5>
           <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
+            <li><a class="white-text" href="https://vuejs.org/">VueJS</a></li>
+            <li><a class="white-text" href="https://dadosabertos.camara.leg.br/swagger/api.html">Dados abertos da câmara</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="footer-copyright">
       <div class="container">
-      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      Feito com <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
       </div>
     </div>
   </footer>
@@ -114,7 +100,8 @@
       data: {
         deputados: [],
         deputados_filtrados: [],
-        filtro_deputados: ''
+        filtro_deputados: '',
+        processando: false
       },
       methods: {
         buscarDeputadosUrl: function(url){
@@ -126,6 +113,8 @@
           });
         },
         buscarDeputados: function(){
+          this.processando = true;
+
           $.ajax({
             method: "GET",
             url: "https://dadosabertos.camara.leg.br/api/v2/deputados/?pagina=1&itens=99",
@@ -137,13 +126,17 @@
           this.deputados = this.deputados.concat(data.dados);
           this.deputados_filtrados = this.deputados;
 
+          var has_next = false;
           for (var i = 0; i < data.links.length; i++) {
             if(data.links[i].rel == 'next'){
               this.buscarDeputadosUrl(data.links[i].href);
+              has_next = true;
               break;
             }
           }
-          // $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+          if (!has_next)
+            this.processando = false;
         },
         filtrarDeputados: function(){
           this.deputados_filtrados = [];
