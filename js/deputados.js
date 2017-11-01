@@ -1,12 +1,15 @@
+
 var app = new Vue({
   el: '#app',
   data: {
     deputados: [],
     deputados_filtrados: [],
+    partidos: [],
     filtro_deputados: '',
     filtro_partidos: '',
     processando: false,
-    quantidade_filtrados: 0
+    quantidade_filtrados: 0,
+    quantidade_partidos: 0
   },
   methods: {
     buscarDeputadosUrl: function(url){
@@ -45,6 +48,18 @@ var app = new Vue({
         this.processando = false;
       }
     },
+    buscarPartidos: function(){
+      $.ajax({
+        method: "GET",
+        url: 'https://dadosabertos.camara.leg.br/api/v2/partidos?itens=99&ordenarPor=sigla',
+        dataType: "json",
+        success: this.atualizarPartidos
+      });
+    },
+    atualizarPartidos: function(partidos){
+      this.quantidade_partidos = partidos.dados.length;
+      this.partidos = partidos.dados;
+    },
     filtrarDeputados: function(){
       this.filtro_partidos = '';
       this.deputados_filtrados = [];
@@ -80,5 +95,6 @@ var app = new Vue({
   },
   created: function(){
     this.buscarDeputados();
+    this.buscarPartidos();
   }
 })
