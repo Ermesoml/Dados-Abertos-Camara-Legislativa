@@ -42,6 +42,21 @@
             </div>
           </div>
         </div>
+        <div class="col s12" v-cloak>
+          <div v-if="!processando" class="red-text">
+            <div class="card orange">
+              <div class="card-content white-text">
+                <h4 class="center-align">Estatísticas</h4>
+                <div class="row center-align">
+                  <div class="col s12 m4">
+                    <strong>Quantidade de deputados</strong><br>
+                    <span>{{quantidade_filtrados}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="col s12 m3" v-for="bloco in deputados_filtrados" v-if="!processando" v-cloak>
           <div class="card blue-grey">
             <div class="card-content white-text center-align">
@@ -52,7 +67,7 @@
             </div>
             <div class="card-action">
               <a :href="'deputados_detalhes.html?deputado_id='+bloco.id">Ver mais</a>
-              <i class="material-icons right white-text">star</i>
+              <i class="material-icons right white-text" v-cloak>star_border</i>
             </div>
           </div>
         </div>

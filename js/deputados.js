@@ -5,7 +5,8 @@ var app = new Vue({
     deputados_filtrados: [],
     filtro_deputados: '',
     filtro_partidos: '',
-    processando: false
+    processando: false,
+    quantidade_filtrados: 0
   },
   methods: {
     buscarDeputadosUrl: function(url){
@@ -39,8 +40,10 @@ var app = new Vue({
         }
       }
 
-      if (!has_next)
+      if (!has_next){
+        this.quantidade_filtrados = this.deputados_filtrados.length;
         this.processando = false;
+      }
     },
     filtrarDeputados: function(){
       this.filtro_partidos = '';
@@ -55,6 +58,8 @@ var app = new Vue({
           }
         }
       }
+
+      this.quantidade_filtrados = this.deputados_filtrados.length;
     },
     filtrarPartidos: function(){
       this.filtro_deputados = '';
@@ -69,6 +74,8 @@ var app = new Vue({
           }
         }
       }
+      
+      this.quantidade_filtrados = this.deputados_filtrados.length;
     }
   },
   created: function(){
