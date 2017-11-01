@@ -43,6 +43,8 @@
               <p><strong>UF nascimento: </strong>{{dados_deputado.ufNascimento}}</p>
               <p><strong>Municipio de nascimento: </strong>{{dados_deputado.municipioNascimento}}</p>
               <p><strong>Escolaridade: </strong>{{dados_deputado.escolaridade}}</p>
+              <p v-if="dados_deputado.ultimoStatus != undefined"><strong>Email: </strong>{{dados_deputado.ultimoStatus.gabinete.email}}</p>
+              <p></p>
               <hr>
               <p v-if="dados_deputado.ultimoStatus != undefined"><strong>Nome eleitoral: </strong>{{dados_deputado.ultimoStatus.nomeEleitoral}}</p>
               <p v-if="dados_deputado.ultimoStatus != undefined"><strong>Data de eleição: </strong>{{dados_deputado.ultimoStatus.data}}</p>
@@ -58,7 +60,7 @@
         <div class="col s12">
           <ul class="tabs tabs-fixed-width">
             <li class="tab col s3"><a class="active" href="#tabDespesas">Despesas</a></li>
-            <li class="tab col s3"><a href="#tabEventos">Eventos</a></li>
+            <li class="tab col s3"><a href="#tabProposicoes">Proposições</a></li>
           </ul>
         </div>
         <div id="tabDespesas" class="col s12">
@@ -103,9 +105,9 @@
             </div>
           </div>
         </div>
-        <div id="tabEventos" class="col s12">
+        <div id="tabProposicoes" class="col s12">
           <div class="section">
-            <h4 class="center-align">Eventos em {{ano_pesquisa}}</h4>
+            <h4 class="center-align">Proposições</h4>
             <div class="row">
               <!-- <div class="input-field col s12">
                 <input id="tipo-despesa" type="text" v-model="filtro" v-on:keyup="filtrarDespesas()">
