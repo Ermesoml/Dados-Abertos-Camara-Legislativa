@@ -81,6 +81,9 @@ var app = new Vue({
           total = Math.abs(total);
       }
       return (neg ? "-R$" : 'R$') + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1.").toString();
+    },
+    getMesFormatado: function(mes){
+      return getMes(mes);
     }
   },
   created: function(){

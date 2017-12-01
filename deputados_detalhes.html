@@ -89,7 +89,7 @@
               <tbody>
                 <tr v-for="despesa in despesas_filtradas">
                   <td>{{despesa.ano}}</td>
-                  <td>{{despesa.mes}}</td>
+                  <td>{{getMesFormatado(despesa.mes)}}</td>
                   <td>{{despesa.tipoDespesa}}</td>
                   <td>{{despesa.dataDocumento}}</td>
                   <td>{{despesa.nomeFornecedor}}</td>
@@ -151,29 +151,6 @@
     </div>
     <br><br>
   </div>
-
-  <footer class="page-footer blue">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">AppFiscalize</h5>
-          <p class="grey-text text-lighten-4">Acompanhe de forma fácil e prática todos os detalhes dispostos pela <a class="white-text" href="http://www2.camara.leg.br/">Câmara dos deputados</a>.</p>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">O que usamos:</h5>
-          <ul>
-            <li><a class="white-text" href="https://vuejs.org/">VueJS</a></li>
-            <li><a class="white-text" href="https://dadosabertos.camara.leg.br/swagger/api.html">Dados abertos da câmara</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-copyright">
-      <div class="container">
-      Feito com <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
-      </div>
-    </div>
-  </footer>
 
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
