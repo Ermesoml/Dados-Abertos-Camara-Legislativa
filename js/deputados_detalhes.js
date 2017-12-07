@@ -4,6 +4,7 @@ var app = new Vue({
     dados_deputado: {},
     despesas_deputado: [],
     despesas_filtradas: [],
+    proposicoes_deputado: [],
     total_despesas: 0,
     total_despesas_filtradas: 0,
     ano_pesquisa: 0,
@@ -22,6 +23,8 @@ var app = new Vue({
     },
     atualizarInfo: function(data){
       this.dados_deputado = data.dados;
+
+      this.buscarProposicoesDeputado(this.dados_deputado.ultimoStatus.nomeEleitoral);
     },
     buscarDespesasDeputado: function(deputado_id, ano_pesquisa){
       var url = "https://dadosabertos.camara.leg.br/api/v2/deputados/"+ deputado_id +"/despesas?ano=" + ano_pesquisa + "&itens=100&ordem=desc&ordenarPor=numMes"; 
@@ -73,6 +76,20 @@ var app = new Vue({
           this.total_despesas_filtradas = this.total_despesas_filtradas + parseFloat(this.despesas_deputado[i].valorDocumento);
         }
       }
+    },
+    buscarProposicoesDeputado: function(nome_deputado){
+      var url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?autor="+ nome_deputado; 
+
+      $.ajax({
+        method: "GET",
+        url: url,
+        dataType: "json",
+        success: this.atualizarProposicoes
+      });
+    },
+    atualizarProposicoes: function(data){
+      
+      this.proposicoes_deputado = data.dados;
     },
     formatCurrency: function(total) {
       var neg = false;
