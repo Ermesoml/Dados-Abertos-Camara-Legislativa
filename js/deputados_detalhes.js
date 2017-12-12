@@ -25,6 +25,10 @@ var app = new Vue({
     },
     atualizarInfo: function(data){
       this.dados_deputado = data.dados;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 14b7a743ecb00dcb28f0c1e77ddc33879d9f3805
       this.buscarProposicoesDeputado(this.dados_deputado.ultimoStatus.nomeEleitoral);
     },
     buscarDespesasDeputado: function(deputado_id, ano_pesquisa){
@@ -89,7 +93,11 @@ var app = new Vue({
       });
     },
     atualizarProposicoes: function(data){
+<<<<<<< HEAD
       this.processando = false;  
+=======
+      
+>>>>>>> 14b7a743ecb00dcb28f0c1e77ddc33879d9f3805
       this.proposicoes_deputado = data.dados;
     },
     formatCurrency: function(total) {
