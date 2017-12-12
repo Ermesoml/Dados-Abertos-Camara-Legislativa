@@ -7,6 +7,7 @@ var app = new Vue({
     partidos: [],
     filtro_deputados: '',
     filtro_partidos: '',
+    filtro_estados: '',
     processando: false,
     quantidade_filtrados: 0,
     quantidade_partidos: 0
@@ -62,6 +63,7 @@ var app = new Vue({
     },
     filtrarDeputados: function(){
       this.filtro_partidos = '';
+      this.filtro_estados = '';
       this.deputados_filtrados = [];
       
       if (this.filtro_deputados == '')
@@ -78,13 +80,31 @@ var app = new Vue({
     },
     filtrarPartidos: function(){
       this.filtro_deputados = '';
+      this.filtro_estados = '';
       this.deputados_filtrados = [];
       
       if (this.filtro_partidos == '')
         this.deputados_filtrados = this.deputados;
       else{
-        for (var i = 0; i < this.deputados.length; i++) {
+        for (var i = 0; i < this    .deputados.length; i++) {
           if (this.deputados[i].siglaPartido.toUpperCase() == (this.filtro_partidos.toUpperCase())){
+            this.deputados_filtrados.push(this.deputados[i])
+          }
+        }
+      }
+      
+      this.quantidade_filtrados = this.deputados_filtrados.length;
+    },
+    filtrarEstados: function(){
+      this.filtro_deputados = '';
+      this.filtro_partidos = '';
+      this.deputados_filtrados = [];
+      
+      if (this.filtro_estados == '')
+        this.deputados_filtrados = this.deputados;
+      else{
+        for (var i = 0; i < this.deputados.length; i++) {
+          if (this.deputados[i].siglaUf.toUpperCase() == (this.filtro_estados.toUpperCase())){
             this.deputados_filtrados.push(this.deputados[i])
           }
         }

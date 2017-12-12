@@ -13,19 +13,17 @@
 </head>
 <body>
   <nav class="blue-grey lighten-2" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="index.html" class="brand-logo">AppFiscalize</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="index.html" class="brand-logo">Dados da câmara</a>
     </div>
   </nav>
   <div class="section no-pad-bot" id="index-banner">
     <div class="container">
-      <br><br>
       <h1 class="header center orange-text">Detalhes do deputado</h1>
     </div>
   </div>
 
   <div class="container" id="app">
     <div class="section">
-      <!--   Icon Section   -->
       <div class="row">
         <div class="col s12 m12" v-if="dados_deputado != undefined" v-cloak>
           <div class="card  blue-grey lighten-1">
@@ -72,6 +70,9 @@
                 <label for="tipo-despesa">Filtro (Tipo de despesa ou Fornecedor)</label>
               </div>
             </div>
+            <div class="row">
+              <h3 class="red-text">Total filtrado: {{formatCurrency(total_despesas_filtradas)}}</h3>
+            </div>
             <table class="bordered striped centered responsive-table">
               <thead>
                 <tr>
@@ -81,7 +82,7 @@
                   <th>Data do docum.</th>
                   <th>Fornecedor</th>
                   <th>CNPJ Forn.</th>
-                  <th class="red-text">Valor docum.</th>
+                  <th class="red-text">Valor documento</th>
                   <th>Tipo docum.</th>
                   <th>Num docum.</th>
                 </tr>
@@ -89,91 +90,48 @@
               <tbody>
                 <tr v-for="despesa in despesas_filtradas">
                   <td>{{despesa.ano}}</td>
-                  <td>{{despesa.mes}}</td>
+                  <td>{{getMesFormatado(despesa.mes)}}</td>
                   <td>{{despesa.tipoDespesa}}</td>
                   <td>{{despesa.dataDocumento}}</td>
                   <td>{{despesa.nomeFornecedor}}</td>
                   <td>{{despesa.cnpjFornecedor}}</td>
-                  <td class="red-text"><b>{{despesa.valorDocumento}}</b></td>
+                  <td class="red-text"><b>R$ {{despesa.valorDocumento}}</b></td>
                   <td>{{despesa.tipoDocumento}}</td>
                   <td>{{despesa.numDocumento}}</td>
                 </tr>
               </tbody>
             </table>
-            <div class="row">
-              <h3 class="red-text">Total filtrado: {{formatCurrency(total_despesas_filtradas)}}</h3>
-            </div>
           </div>
         </div>
         <div id="tabProposicoes" class="col s12">
           <div class="section">
             <h4 class="center-align">Proposições</h4>
-            <div class="row">
-              <!-- <div class="input-field col s12">
-                <input id="tipo-despesa" type="text" v-model="filtro" v-on:keyup="filtrarDespesas()">
-                <label for="tipo-despesa">Filtro (Tipo de despesa ou Fornecedor)</label>
-              </div> -->
+            <div class="center" v-if="processando">
+              Carregando...
             </div>
-            <!-- <table class="bordered striped centered responsive-table">
+            <div class="center" v-if="proposicoes_deputado.length == 0 && !processando">
+              Não foram encontradas preposições cadastradas para este deputado.
+            </div>
+            <table class="bordered striped centered responsive-table" v-if="proposicoes_deputado.length > 0 && !processando">
               <thead>
                 <tr>
                   <th>Ano</th>
-                  <th>Mês</th>
-                  <th>Tipo desp.</th>
-                  <th>Data do docum.</th>
-                  <th>Fornecedor</th>
-                  <th>CNPJ Forn.</th>
-                  <th>Valor docum.</th>
-                  <th>Tipo docum.</th>
-                  <th>Num docum.</th>
+                  <th>Ementa</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="despesa in despesas_filtradas">
+                <tr v-for="despesa in proposicoes_deputado">
                   <td>{{despesa.ano}}</td>
-                  <td>{{despesa.mes}}</td>
-                  <td>{{despesa.tipoDespesa}}</td>
-                  <td>{{despesa.dataDocumento}}</td>
-                  <td>{{despesa.nomeFornecedor}}</td>
-                  <td>{{despesa.cnpjFornecedor}}</td>
-                  <td>{{despesa.valorDocumento}}</td>
-                  <td>{{despesa.tipoDocumento}}</td>
-                  <td>{{despesa.numDocumento}}</td>
+                  <td>{{despesa.ementa}}</td>
                 </tr>
               </tbody>
-            </table> 
-            <div class="row">
-              <h3>Total filtrado: {{formatCurrency(total_despesas_filtradas)}}</h3>
-            </div>-->
+            </table>
           </div>
         </div>
       </div>
     </div>
     <br><br>
   </div>
-
-  <footer class="page-footer blue">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">AppFiscalize</h5>
-          <p class="grey-text text-lighten-4">Acompanhe de forma fácil e prática todos os detalhes dispostos pela <a class="white-text" href="http://www2.camara.leg.br/">Câmara dos deputados</a>.</p>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">O que usamos:</h5>
-          <ul>
-            <li><a class="white-text" href="https://vuejs.org/">VueJS</a></li>
-            <li><a class="white-text" href="https://dadosabertos.camara.leg.br/swagger/api.html">Dados abertos da câmara</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-copyright">
-      <div class="container">
-      Feito com <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
-      </div>
-    </div>
-  </footer>
 
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
