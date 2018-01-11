@@ -1,3 +1,8 @@
+$(document).ready(function(){
+  // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+  $('.modal').modal();
+});
+
 var app = new Vue({
   el: '#app',
   data: {
@@ -5,6 +10,7 @@ var app = new Vue({
     despesas_deputado: [],
     despesas_filtradas: [],
     proposicoes_deputado: [],
+    detalhes_proposicao: {},
     total_despesas: 0,
     total_despesas_filtradas: 0,
     ano_pesquisa: 0,
@@ -90,6 +96,20 @@ var app = new Vue({
     atualizarProposicoes: function(data){
       
       this.proposicoes_deputado = data.dados;
+    },
+    detalharProposicao: function(uri){
+      $('#modalDetalhesProposicao').modal('open');
+
+      $.ajax({
+        method: "GET",
+        url: uri,
+        dataType: "json",
+        success: this.mostrarModalDetalhesProposicao
+      });
+    },
+    mostrarModalDetalhesProposicao: function(proposicao){
+      this.detalhes_proposicao = proposicao.dados;
+      $('#modalDetalhesProposicao').modal('open');  
     },
     formatCurrency: function(total) {
       var neg = false;

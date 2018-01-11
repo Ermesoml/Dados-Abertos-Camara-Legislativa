@@ -113,15 +113,29 @@
                 <tr>
                   <th>Ano</th>
                   <th>Ementa</th>
+                  <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="despesa in proposicoes_deputado">
-                  <td>{{despesa.ano}}</td>
-                  <td>{{despesa.ementa}}</td>
+                <tr v-for="proposicao in proposicoes_deputado">
+                  <td>{{proposicao.ano}}</td>
+                  <td>{{proposicao.ementa}}</td>
+                  <th><button class="waves-effect waves-light btn" @click="detalharProposicao(proposicao.uri)">Detalhes</button></th>
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- Modal Structure -->
+        <div id="modalDetalhesProposicao" class="modal">
+          <div class="modal-content">
+            <h4>{{detalhes_proposicao.siglaTipo}} - {{detalhes_proposicao.numero}} - {{detalhes_proposicao.ano}}</h4>
+            <p>{{detalhes_proposicao.ementa}}</p>
+            <p><a class="waves-effect waves-light btn" v-if="detalhes_proposicao.statusProposicao!=undefined" :href="detalhes_proposicao.statusProposicao.url">Documento da proposição na íntegra</a></p>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
           </div>
         </div>
       </div>
