@@ -1,6 +1,30 @@
 $(document).ready(function(){
   // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
   $('.modal').modal();
+  $('select').material_select();
+});
+
+/* 
+  Modificação necessária para pegar o valor do select do materialize com o vue.
+  Encontrada em https://stackoverflow.com/questions/33704122/vuejs-materializecss-select-field
+*/
+Vue.directive("select", {
+    "twoWay": true,
+
+    update: function(el, binding, vnode) {
+      if(!vnode.elm.dataset.vueSelectReady) {
+        $(el).on('change', function() {
+            vnode.context.$set(vnode.context, binding.expression, el.value);
+        });
+
+        $(el).material_select();
+        vnode.elm.dataset.vueSelectReady = true
+      }
+    },
+
+    unbind: function(el, binding, vnode) {
+        $(el).material_select('destroy');
+    }
 });
 
 var app = new Vue({
@@ -14,11 +38,13 @@ var app = new Vue({
     total_despesas: 0,
     total_despesas_filtradas: 0,
     ano_pesquisa: 0,
-    filtro: ''
+    filtro: '',
+    processando_proposicoes: false
   },
   methods: {
     buscarInfoDeputado: function(deputado_id){
       var url = "https://dadosabertos.camara.leg.br/api/v2/deputados/" + deputado_id 
+      this.processando_proposicoes = true;
 
       $.ajax({
         method: "GET",
@@ -32,8 +58,12 @@ var app = new Vue({
 
       this.buscarProposicoesDeputado(this.dados_deputado.ultimoStatus.nomeEleitoral);
     },
-    buscarDespesasDeputado: function(deputado_id, ano_pesquisa){
-      var url = "https://dadosabertos.camara.leg.br/api/v2/deputados/"+ deputado_id +"/despesas?ano=" + ano_pesquisa + "&itens=100&ordem=desc&ordenarPor=numMes"; 
+    buscarDespesasDeputado: function(deputado_id){
+      var url = "https://dadosabertos.camara.leg.br/api/v2/deputados/"+ deputado_id +"/despesas?ano=" + this.ano_pesquisa + "&itens=100&ordem=desc&ordenarPor=numMes"; 
+      this.despesas_deputado = [];
+      this.despesas_filtradas = [];
+      this.total_despesas = 0;
+      this.total_despesas_filtradas = 0;
 
       $.ajax({
         method: "GET",
@@ -85,6 +115,7 @@ var app = new Vue({
     },
     buscarProposicoesDeputado: function(nome_deputado){
       var url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?autor="+ nome_deputado; 
+      this.processando_proposicoes = true;
 
       $.ajax({
         method: "GET",
@@ -94,7 +125,7 @@ var app = new Vue({
       });
     },
     atualizarProposicoes: function(data){
-      
+      this.processando_proposicoes = false;
       this.proposicoes_deputado = data.dados;
     },
     detalharProposicao: function(uri){
@@ -125,9 +156,9 @@ var app = new Vue({
   },
   created: function(){
     var deputado_id = findGetParameter('deputado_id');
-    this.ano_pesquisa = 2017;
+    this.ano_pesquisa = 2018;
 
     this.buscarInfoDeputado(deputado_id);
-    this.buscarDespesasDeputado(deputado_id, this.ano_pesquisa);
+    this.buscarDespesasDeputado(deputado_id);
   }
 })
