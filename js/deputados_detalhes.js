@@ -30,6 +30,7 @@ Vue.directive("select", {
 var app = new Vue({
   el: '#app',
   data: {
+    deputado_id: 0,
     dados_deputado: {},
     despesas_deputado: [],
     despesas_filtradas: [],
@@ -42,22 +43,6 @@ var app = new Vue({
     processando_proposicoes: false
   },
   methods: {
-    buscarInfoDeputado: function(deputado_id){
-      this.processando = true;
-      var url = "https://dadosabertos.camara.leg.br/api/v2/deputados/" + deputado_id 
-      this.processando_proposicoes = true;
-
-      $.ajax({
-        method: "GET",
-        url: url,
-        dataType: "json",
-        success: this.atualizarInfo
-      });
-    },
-    atualizarInfo: function(data){
-      this.dados_deputado = data.dados;
-      this.buscarProposicoesDeputado(this.dados_deputado.ultimoStatus.nomeEleitoral);
-    },
     buscarDespesasDeputado: function(deputado_id){
       var url = "https://dadosabertos.camara.leg.br/api/v2/deputados/"+ deputado_id +"/despesas?ano=" + this.ano_pesquisa + "&itens=100&ordem=desc&ordenarPor=numMes"; 
       this.despesas_deputado = [];
@@ -113,8 +98,8 @@ var app = new Vue({
         }
       }
     },
-    buscarProposicoesDeputado: function(nome_deputado){
-      var url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?autor="+ nome_deputado; 
+    buscarProposicoesDeputado: function(deputado_id){
+      var url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?idAutor="+ deputado_id; 
       this.processando_proposicoes = true;
 
       $.ajax({
@@ -155,10 +140,11 @@ var app = new Vue({
     }
   },
   created: function(){
-    var deputado_id = findGetParameter('deputado_id');
+    this.deputado_id = findGetParameter('deputado_id');
     this.ano_pesquisa = 2018;
 
-    this.buscarInfoDeputado(deputado_id);
-    this.buscarDespesasDeputado(deputado_id);
+    // this.buscarInfoDeputado(this.deputado_id);
+    this.buscarDespesasDeputado(this.deputado_id);
+    this.buscarProposicoesDeputado(this.deputado_id);
   }
 })
