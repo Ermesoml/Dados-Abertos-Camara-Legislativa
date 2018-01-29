@@ -39,10 +39,15 @@ var app = new Vue({
     total_despesas_filtradas: 0,
     ano_pesquisa: 0,
     filtro: '',
+<<<<<<< HEAD
     processando_proposicoes: false
+=======
+    processando: false
+>>>>>>> f185ac763e1bebe0b129156340db76ca8824f2cd
   },
   methods: {
     buscarInfoDeputado: function(deputado_id){
+      this.processando = true;
       var url = "https://dadosabertos.camara.leg.br/api/v2/deputados/" + deputado_id 
       this.processando_proposicoes = true;
 
@@ -55,7 +60,6 @@ var app = new Vue({
     },
     atualizarInfo: function(data){
       this.dados_deputado = data.dados;
-
       this.buscarProposicoesDeputado(this.dados_deputado.ultimoStatus.nomeEleitoral);
     },
     buscarDespesasDeputado: function(deputado_id){
@@ -125,7 +129,11 @@ var app = new Vue({
       });
     },
     atualizarProposicoes: function(data){
+<<<<<<< HEAD
       this.processando_proposicoes = false;
+=======
+      this.processando = false;  
+>>>>>>> f185ac763e1bebe0b129156340db76ca8824f2cd
       this.proposicoes_deputado = data.dados;
     },
     detalharProposicao: function(uri){

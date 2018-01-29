@@ -13,19 +13,17 @@
 </head>
 <body>
   <nav class="blue-grey lighten-2" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="index.html" class="brand-logo">AppFiscalize</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="index.html" class="brand-logo">Dados da câmara</a>
     </div>
   </nav>
   <div class="section no-pad-bot" id="index-banner">
     <div class="container">
-      <br><br>
       <h1 class="header center orange-text">Detalhes do deputado</h1>
     </div>
   </div>
 
   <div class="container" id="app">
     <div class="section">
-      <!--   Icon Section   -->
       <div class="row">
         <div class="col s12 m12" v-if="dados_deputado != undefined" v-cloak>
           <div class="card  blue-grey lighten-1">
@@ -88,6 +86,9 @@
                 <label for="tipo-despesa">Filtro (Tipo de despesa ou Fornecedor)</label>
               </div>
             </div>
+            <div class="row">
+              <h3 class="red-text">Total filtrado: {{formatCurrency(total_despesas_filtradas)}}</h3>
+            </div>
             <table class="bordered striped centered responsive-table">
               <thead>
                 <tr>
@@ -97,7 +98,7 @@
                   <th>Data do docum.</th>
                   <th>Fornecedor</th>
                   <th>CNPJ Forn.</th>
-                  <th class="red-text">Valor docum.</th>
+                  <th class="red-text">Valor documento</th>
                   <th>Tipo docum.</th>
                   <th>Num docum.</th>
                 </tr>
@@ -110,20 +111,18 @@
                   <td>{{despesa.dataDocumento}}</td>
                   <td>{{despesa.nomeFornecedor}}</td>
                   <td>{{despesa.cnpjFornecedor}}</td>
-                  <td class="red-text"><b>{{despesa.valorDocumento}}</b></td>
+                  <td class="red-text"><b>R$ {{despesa.valorDocumento}}</b></td>
                   <td>{{despesa.tipoDocumento}}</td>
                   <td>{{despesa.numDocumento}}</td>
                 </tr>
               </tbody>
             </table>
-            <div class="row">
-              <h3 class="red-text">Total filtrado: {{formatCurrency(total_despesas_filtradas)}}</h3>
-            </div>
           </div>
         </div>
         <div id="tabProposicoes" class="col s12">
           <div class="section">
             <h4 class="center-align">Proposições</h4>
+<<<<<<< HEAD
             <div class="col s12" v-if="processando_proposicoes">
               <div class="red-text">
                 <div class="progress">
@@ -132,6 +131,16 @@
               </div>
             </div>
             <table class="bordered striped centered responsive-table" v-if="!processando_proposicoes && proposicoes_deputado.length > 0"> 
+=======
+            <div class="center" v-if="processando">
+              Carregando...
+            </div>
+            <div class="center" v-if="proposicoes_deputado.length == 0 && !processando">
+              Não foram encontradas preposições cadastradas para este deputado.
+            </div>
+            <table class="bordered striped centered responsive-table" v-if="proposicoes_deputado.length > 0 && !processando">
+            <table class="bordered striped centered responsive-table">
+>>>>>>> f185ac763e1bebe0b129156340db76ca8824f2cd
               <thead>
                 <tr>
                   <th>Ano</th>

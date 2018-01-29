@@ -13,19 +13,17 @@
 </head>
 <body>
   <nav class="blue lighten-2" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="index.html" class="brand-logo">AppFiscalize</a> 
+    <div class="nav-wrapper container"><a id="logo-container" href="index.html" class="brand-logo">Dados da câmara</a> 
     </div>
   </nav>
   <div class="section no-pad-bot" id="index-banner">
     <div class="container">
-      <br><br>
       <h1 class="header center orange-text">Deputados</h1>
     </div>
   </div>
 
   <div class="container" id="app">
     <div class="section">
-      <!--   Icon Section   -->
       <div class="row">
         <div class="input-field col s12 m4">
           <input id="deputado" type="text" v-model="filtro_deputados" v-on:keyup="filtrarDeputados()">
@@ -40,7 +38,10 @@
           <label for="uf">Pesquise por UF</label>
         </div>
         <div class="col s12">
-          <div v-if="processando" class="red-text">
+          <div v-if="processando">
+            <div>
+              Buscando dados da câmara, por favor aguarde...
+            </div>
             <div class="progress">
                 <div class="indeterminate"></div>
             </div>
