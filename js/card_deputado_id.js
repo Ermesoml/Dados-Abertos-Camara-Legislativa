@@ -6,10 +6,8 @@ Vue.component('deputado', {
             <div class="card-content white-text center-align">
               <img v-if="deputado.ultimoStatus != undefined" :src="deputado.ultimoStatus.urlFoto" :alt="deputado.nomeCivil" style="max-width: 110px">
               <span class="card-title">{{deputado.nomeCivil}}</span>
-
-              <!-- <p><strong>Valor gasto em {{ano_pesquisa}}: </strong>{{formatCurrency(total_despesas)}}</p> -->
-              <!-- <p><strong>Código: </strong>{{deputado.id}}</p> -->
-              <!-- <p><strong>Nome civil: </strong>{{deputado.nomeCivil}}</p> -->
+              <p><strong>Código: </strong>{{deputado.id}}</p>
+              <p><strong>Nome civil: </strong>{{deputado.nomeCivil}}</p>
               <p v-if="deputado.ultimoStatus != undefined"><strong>Partido: </strong>{{deputado.ultimoStatus.siglaPartido}}</p>
               <p><strong>CPF: </strong>{{deputado.cpf}}</p>
               <p><strong>Sexo: </strong>{{deputado.sexo}}</p>
@@ -18,7 +16,6 @@ Vue.component('deputado', {
               <p><strong>Municipio de nascimento: </strong>{{deputado.municipioNascimento}}</p>
               <p><strong>Escolaridade: </strong>{{deputado.escolaridade}}</p>
               <p v-if="deputado.ultimoStatus != undefined"><strong>Email: </strong>{{deputado.ultimoStatus.gabinete.email}}</p>
-              <p></p>
               <hr>
               <p v-if="deputado.ultimoStatus != undefined"><strong>Nome eleitoral: </strong>{{deputado.ultimoStatus.nomeEleitoral}}</p>
               <p v-if="deputado.ultimoStatus != undefined"><strong>Data de eleição: </strong>{{deputado.ultimoStatus.data}}</p>

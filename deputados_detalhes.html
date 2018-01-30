@@ -34,105 +34,10 @@
           </ul>
         </div>
         <div id="tabDespesas" class="col s12">
-          <div class="section">
-            <h4 class="center-align">
-              Despesas em 
-              <div class="row">
-                <div class="input-field col m10 s12">
-                  <select v-select="ano_pesquisa">
-                    <option value="2018">2018</option>
-                    <option value="2017">2017</option>
-                    <option value="2016">2016</option>
-                    <option value="2015">2015</option>
-                  </select>
-                </div>
-                <div class="input-field col m2 s12">
-                  <button class="waves-effect waves-light btn" @click="buscarDespesasDeputado(deputado_id)">Processar</button>
-                </div>
-              </div>
-              <!-- {{ano_pesquisa}} -->
-            </h4>
-            <div class="row">
-              <div class="input-field col s12">
-                <input id="tipo-despesa" type="text" v-model="filtro" v-on:keyup="filtrarDespesas()">
-                <label for="tipo-despesa">Filtro (Tipo de despesa ou Fornecedor)</label>
-              </div>
-            </div>
-            <div class="row">
-              <h3 class="red-text">Total filtrado: {{formatCurrency(total_despesas_filtradas)}}</h3>
-            </div>
-            <table class="bordered striped centered responsive-table">
-              <thead>
-                <tr>
-                  <th>Ano</th>
-                  <th>Mês</th>
-                  <th>Tipo desp.</th>
-                  <th>Data do docum.</th>
-                  <th>Fornecedor</th>
-                  <th>CNPJ Forn.</th>
-                  <th class="red-text">Valor documento</th>
-                  <th>Tipo docum.</th>
-                  <th>Num docum.</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="despesa in despesas_filtradas">
-                  <td>{{despesa.ano}}</td>
-                  <td>{{getMesFormatado(despesa.mes)}}</td>
-                  <td>{{despesa.tipoDespesa}}</td>
-                  <td>{{despesa.dataDocumento}}</td>
-                  <td>{{despesa.nomeFornecedor}}</td>
-                  <td>{{despesa.cnpjFornecedor}}</td>
-                  <td class="red-text"><b>R$ {{despesa.valorDocumento}}</b></td>
-                  <td>{{despesa.tipoDocumento}}</td>
-                  <td>{{despesa.numDocumento}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <despesas-deputado :deputado-id="deputado_id"></despesas-deputado>
         </div>
         <div id="tabProposicoes" class="col s12">
-          <div class="section">
-            <h4 class="center-align">Proposições</h4>
-            <div class="col s12" v-if="processando_proposicoes">
-              <div class="red-text">
-                <div class="progress">
-                    <div class="indeterminate"></div>
-                </div>
-              </div>
-            </div>
-            <table class="bordered striped centered responsive-table" v-if="!processando_proposicoes && proposicoes_deputado.length > 0"> 
-              <thead>
-                <tr>
-                  <th>Ano</th>
-                  <th>Ementa</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="proposicao in proposicoes_deputado">
-                  <td>{{proposicao.ano}}</td>
-                  <td>{{proposicao.ementa}}</td>
-                  <th><button class="waves-effect waves-light btn" @click="detalharProposicao(proposicao.uri)">Detalhes</button></th>
-                </tr>
-              </tbody>
-            </table>
-            <div class="row" v-if="!processando_proposicoes && proposicoes_deputado.length == 0">
-              Não há proposições cadastradas para este deputado.
-            </div>
-          </div>
-        </div>
-
-        <!-- Modal Structure -->
-        <div id="modalDetalhesProposicao" class="modal">
-          <div class="modal-content">
-            <h4>{{detalhes_proposicao.siglaTipo}} - {{detalhes_proposicao.numero}} - {{detalhes_proposicao.ano}}</h4>
-            <p>{{detalhes_proposicao.ementa}}</p>
-            <p><a class="waves-effect waves-light btn" target="_blank" v-if="detalhes_proposicao.statusProposicao!=undefined" :href="detalhes_proposicao.statusProposicao.url">Documento da proposição na íntegra</a></p>
-          </div>
-          <div class="modal-footer">
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
-          </div>
+          <deputado-proposicoes :deputado-id="deputado_id"></deputado-proposicoes>
         </div>
       </div>
     </div>
@@ -146,6 +51,8 @@
   <script src="js/init.js"></script>
   <script src="https://unpkg.com/vue@2.4.2"></script>
   <script src="js/card_deputado_id.js"></script>
+  <script src="js/card_despesas.js"></script>
+  <script src="js/card_proposicoes.js"></script>
   <script src="js/deputados_detalhes.js"></script>
   </body>
 </html>
